@@ -1,0 +1,54 @@
+:root {
+  --color-gray-00: #000000;
+  --color-gray-05: #7F7F7F;
+  --color-gray-10: #FFFFFF;
+
+  --color-red-01: #FC9797;
+  --color-red-05: #FF0000;
+
+  --color-blue-05: #0000FF;
+}
+
+:root {
+  --spacing-0: 0;
+  --spacing-1: 1px;
+  --spacing-2: 4px;
+  --spacing-3: 8px;
+  --spacing-4: 16px;
+  --spacing-5: 32px;
+  --spacing-6: 64px;
+}
+
+:root {
+  --font-family-main: sans-serif;
+}
+
+html {
+  color: var(--color-gray-00);
+  font-family: var(--font-family-main);
+}
+
+html, body {
+  padding: 0;
+  margin: 0;
+}
+
+.lilas-layout {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+}
+
+.lilas-menu {
+  background-color: var(--color-gray-05);
+  padding: var(--spacing-4);
+  min-width: 256px;
+}
+
+.lilas-showcase {
+  padding: var(--spacing-4);
+}
+
+.lilas-showcase iframe {
+  border: none;
+}

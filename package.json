@@ -1,0 +1,13 @@
+{
+  "name": "lilas-workspace",
+  "license": "MIT",
+  "author": "Tommy Joe Lund",
+  "workspaces": [
+    "lilas",
+    "example-library"
+  ],
+  "volta": {
+    "node": "14.17.6",
+    "npm": "7.23.0"
+  }
+}
