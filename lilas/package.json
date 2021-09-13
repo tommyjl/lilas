@@ -9,7 +9,9 @@
     "lilas": "index.js"
   },
   "scripts": {
-    "start": "node index.js"
+    "build": "node index.js build",
+    "watch": "node index.js watch",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
     "esbuild": "^0.12.26",

@@ -6,6 +6,11 @@
     "lilas",
     "example-library"
   ],
+  "scripts": {
+    "build": "npm run --workspaces build",
+    "watch": "npm run --workspaces watch",
+    "clean": "npm run --workspaces clean"
+  },
   "volta": {
     "node": "14.17.6",
     "npm": "7.23.0"

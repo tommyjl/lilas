@@ -5,7 +5,8 @@
   "author": "Tommy Joe Lund",
   "scripts": {
     "build": "lilas build",
-    "watch": "lilas watch"
+    "watch": "lilas watch",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
     "react": "^17.0.2"

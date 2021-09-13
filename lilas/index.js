@@ -2,24 +2,33 @@
 import { copyFileSync } from "fs";
 import { execSync } from "child_process";
 import esbuild from "esbuild";
+import { dirname, resolve } from "path";
+import { fileURLToPath } from "url";
 
-const OUT_DIR = "dist";
-const STATIC_DIR = "static";
+const ROOT_DIR = dirname(fileURLToPath(import.meta.url));
+const OUT_DIR = resolve(".", "dist");
+const STATIC_DIR = resolve(ROOT_DIR, "static");
+const SRC_DIR = resolve(ROOT_DIR, "src");
 
-const staticFiles = {
-  html: "index.html",
-  css: "styles.css",
+const files = {
+  static: {
+    html: "index.html",
+    css: "styles.css",
+  },
+  src: {
+    entryPoint: "index.jsx",
+  },
 };
 
 function print_usage() {
-  console.log("Usage: npm start [ watch | build ]");
+  console.log("Usage: lilas [ build | watch ]");
 }
 
 function build() {
   console.log("Building");
 
   esbuild.buildSync({
-    entryPoints: ["src/index.jsx"],
+    entryPoints: [resolve(SRC_DIR, files.src.entryPoint)],
     bundle: true,
     minify: true,
     sourcemap: true,
@@ -27,9 +36,15 @@ function build() {
     outfile: `${OUT_DIR}/bundle.js`,
   });
 
+  copyFileSync(
+    resolve(STATIC_DIR, files.static.html),
+    resolve(OUT_DIR, files.static.html)
+  );
 
-  copyFileSync(`${STATIC_DIR}/${staticFiles.html}`, `${OUT_DIR}/${staticFiles.html}`);
-  copyFileSync(`${STATIC_DIR}/${staticFiles.css}`, `${OUT_DIR}/${staticFiles.css}`);
+  copyFileSync(
+    resolve(STATIC_DIR, files.static.css),
+    resolve(OUT_DIR, files.static.css)
+  );
 }
 
 function watch() {
@@ -49,24 +64,28 @@ function open() {
       throw `Unknown open command for platform '${process.platform}'`;
   }
 
-  console.log(`Opening ${staticFiles.html}`);
-  execSync(`${command} ${OUT_DIR}/${staticFiles.html}`);
+  console.log(`Opening ${files.static.html}`);
+  execSync(`${command} ${resolve(OUT_DIR, files.static.html)}`);
 }
 
-const args = process.argv;
-if (args.length != 3) {
-  print_usage();
-  process.exit(1);
-}
-
-switch (args[2]) {
-  case "build":
-    build();
-    break;
-  case "watch":
-    watch();
-    break;
-  default:
+function main() {
+  const args = process.argv;
+  if (args.length != 3) {
     print_usage();
     process.exit(1);
+  }
+
+  switch (args[2]) {
+    case "build":
+      build();
+      break;
+    case "watch":
+      watch();
+      break;
+    default:
+      print_usage();
+      process.exit(1);
+  }
 }
+
+main();
