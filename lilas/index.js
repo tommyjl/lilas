@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { copyFileSync } from "fs";
+import { copyFileSync, existsSync } from "fs";
 import { execSync } from "child_process";
 import esbuild from "esbuild";
 import { dirname, resolve } from "path";
@@ -9,6 +9,9 @@ const ROOT_DIR = dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = resolve(".", "dist");
 const STATIC_DIR = resolve(ROOT_DIR, "static");
 const SRC_DIR = resolve(ROOT_DIR, "src");
+
+const LIBRARY_ENTRYPOINTS = ["src/index.js", "src/index.jsx", "src/index.ts", "src/index.tsx"];
+const LIBRARY_OUTFILE = "library-bundle.js";
 
 const files = {
   static: {
@@ -26,6 +29,14 @@ function print_usage() {
 
 function build() {
   console.log("Building");
+
+  buildLilas();
+  buildLibrary();
+  buildShowcase();
+}
+
+function buildLilas() {
+  console.log("Building Lilas");
 
   esbuild.buildSync({
     entryPoints: [resolve(SRC_DIR, files.src.entryPoint)],
@@ -45,6 +56,26 @@ function build() {
     resolve(STATIC_DIR, files.static.css),
     resolve(OUT_DIR, files.static.css)
   );
+}
+
+function buildLibrary() {
+  console.log("Building library");
+
+  const entrypoint = LIBRARY_ENTRYPOINTS.find(filename => existsSync(filename));
+  console.log("the entrypoint is ======", entrypoint);
+
+  esbuild.buildSync({
+    entryPoints: [entrypoint],
+    bundle: true,
+    minify: true,
+    sourcemap: true,
+    target: ["es6"],
+    outfile: resolve(OUT_DIR, LIBRARY_OUTFILE),
+  });
+}
+
+function buildShowcase() {
+  console.log("TODO: Building showcase");
 }
 
 function watch() {
