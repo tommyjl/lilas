@@ -1,5 +1,7 @@
-import React from "react";
+import { FC, ButtonHTMLAttributes } from "react";
 
-export function Button({ children, ...props }) {
+export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
+
+export const Button: FC<ButtonProps> = ({ children, ...props }: ButtonProps) => {
   return <button {...props}>{children}</button>;
 }

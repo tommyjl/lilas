@@ -4,14 +4,17 @@
   "license": "MIT",
   "author": "Tommy Joe Lund",
   "scripts": {
-    "build": "lilas build",
+    "build": "tsc --noEmit && lilas build",
     "watch": "lilas watch",
     "clean": "rm -rf dist"
   },
   "dependencies": {
+    "@types/react": "^17.0.21",
     "react": "^17.0.2"
   },
   "devDependencies": {
-    "lilas": "*"
+    "@tsconfig/recommended": "^1.0.1",
+    "lilas": "*",
+    "typescript": "^4.4.3"
   }
 }

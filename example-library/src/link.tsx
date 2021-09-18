@@ -1,6 +1,8 @@
-import React from "react";
+import { FC, AnchorHTMLAttributes } from "react";
 
-export function Link({ children, ...props }) {
+export type LinkProps = AnchorHTMLAttributes<HTMLAnchorElement>;
+
+export const Link: FC<LinkProps> = ({ children, ...props }: LinkProps) => {
   return <a {...props}>{children}</a>;
 }
 
