@@ -1,4 +1,5 @@
 import { FC, HTMLAttributes } from "react";
+import "./heading.css";
 
 export type HeadingProps = HTMLAttributes<HTMLHeadingElement>;
 

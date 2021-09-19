@@ -1,0 +1,12 @@
+{
+  "name": "lilas-utils",
+  "version": "0.0.1",
+  "license": "MIT",
+  "author": "Tommy Joe Lund",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "echo Nothing to build",
+    "watch": "echo Nothing to watch",
+    "clean": "echo Nothing to clean"
+  }
+}

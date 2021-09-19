@@ -1,4 +1,5 @@
 import { FC, AnchorHTMLAttributes } from "react";
+import "./link.css";
 
 export type LinkProps = AnchorHTMLAttributes<HTMLAnchorElement>;
 

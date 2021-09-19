@@ -1,3 +1,3 @@
-export * from "./button";
-export * from "./heading";
-export * from "./link";
+export * from "./button/button";
+export * from "./heading/heading";
+export * from "./link/link";

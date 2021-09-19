@@ -4,6 +4,7 @@
   "author": "Tommy Joe Lund",
   "workspaces": [
     "lilas",
+    "lilas-utils",
     "example-library"
   ],
   "scripts": {

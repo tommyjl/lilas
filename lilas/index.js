@@ -10,7 +10,12 @@ const OUT_DIR = resolve(".", "dist");
 const STATIC_DIR = resolve(ROOT_DIR, "static");
 const SRC_DIR = resolve(ROOT_DIR, "src");
 
-const LIBRARY_ENTRYPOINTS = ["src/index.js", "src/index.jsx", "src/index.ts", "src/index.tsx"];
+const LIBRARY_ENTRYPOINTS = [
+  "src/index.js",
+  "src/index.jsx",
+  "src/index.ts",
+  "src/index.tsx",
+];
 const LIBRARY_OUTFILE = "library-bundle.js";
 
 const files = {
@@ -27,24 +32,24 @@ function print_usage() {
   console.log("Usage: lilas [ build | watch ]");
 }
 
-function build() {
+async function build() {
   console.log("Building");
 
-  buildLilas();
-  buildLibrary();
-  buildShowcase();
+  await buildLilas();
+  await buildLibrary();
 }
 
-function buildLilas() {
+async function buildLilas() {
   console.log("Building Lilas");
 
-  esbuild.buildSync({
+  await esbuild.build({
     entryPoints: [resolve(SRC_DIR, files.src.entryPoint)],
     bundle: true,
     minify: true,
     sourcemap: true,
     target: ["chrome58", "firefox57", "safari11", "edge16"],
     outfile: `${OUT_DIR}/bundle.js`,
+    logLevel: "info",
   });
 
   copyFileSync(
@@ -58,29 +63,34 @@ function buildLilas() {
   );
 }
 
-function buildLibrary() {
+async function buildLibrary() {
   console.log("Building library");
 
-  const entrypoint = LIBRARY_ENTRYPOINTS.find(filename => existsSync(filename));
-  console.log("the entrypoint is ======", entrypoint);
+  const entrypoint = LIBRARY_ENTRYPOINTS.find((filename) =>
+    existsSync(filename)
+  );
 
-  esbuild.buildSync({
+  const result = await esbuild.build({
     entryPoints: [entrypoint],
+
+    entryNames: "[dir]/[name]-[hash]",
+    external: ["react", "react-dom"],
+    metafile: true,
+
     bundle: true,
     minify: true,
     sourcemap: true,
     target: ["es6"],
+    logLevel: "info",
     outfile: resolve(OUT_DIR, LIBRARY_OUTFILE),
   });
+
+  console.log(await esbuild.analyzeMetafile(result.metafile));
 }
 
-function buildShowcase() {
-  console.log("TODO: Building showcase");
-}
-
-function watch() {
+async function watch() {
   console.log("Watching");
-  build();
+  await build();
   open();
 }
 
@@ -99,7 +109,7 @@ function open() {
   execSync(`${command} ${resolve(OUT_DIR, files.static.html)}`);
 }
 
-function main() {
+async function main() {
   const args = process.argv;
   if (args.length != 3) {
     print_usage();
@@ -108,10 +118,10 @@ function main() {
 
   switch (args[2]) {
     case "build":
-      build();
+      await build();
       break;
     case "watch":
-      watch();
+      await watch();
       break;
     default:
       print_usage();
